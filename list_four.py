@@ -1,5 +1,6 @@
 casos = int(input("Numero da Questão: "))
 import math
+import random
 match casos:
     case 1:
         numeros = list(map(float, input().split()))
@@ -89,3 +90,39 @@ match casos:
             print("dentro")
         else:
             print("fora")
+    case 6:
+        
+        A1 = int(input()) 
+        A2 = int(input())  
+        A3 = int(input()) 
+
+        tempo1 = 0 * A1 + 2 * A2 + 4 * A3
+        tempo2 = 2 * A1 + 0 * A2 + 2 * A3
+        tempo3 = 4 * A1 + 2 * A2 + 0 * A3
+        min_tempo = min(tempo1, tempo2, tempo3)
+
+        print(min_tempo)
+    case 7:
+        max_valor = 100 + 1
+        for i in range(1,max_valor):
+            if i % 2 == 0:
+                print(i)
+    case 8:
+        maior = -1
+        posicao = -1
+
+        for i in range(100):
+            num = int(input())
+            if num > maior:
+                maior = num
+                posicao = i + 1  
+
+        print(maior)
+        print(posicao)
+    case 9:
+        #experimentos = int(input())
+        #for _ in range(1,experimentos + 1):
+         #   pass
+        sla = list(map(str,input().split()))
+        sla[0] = int(sla[0])
+        print(sla)
