@@ -120,9 +120,53 @@ match casos:
         print(maior)
         print(posicao)
     case 9:
-        #experimentos = int(input())
-        #for _ in range(1,experimentos + 1):
-         #   pass
-        sla = list(map(str,input().split()))
-        sla[0] = int(sla[0])
-        print(sla)
+        experimentos = int(input())
+        ratos = 0
+        sapos = 0
+        coelhos = 0
+        for _ in range(1,experimentos + 1):
+            sla = list(map(str,input().split()))
+            if 'C' in sla:
+                coelhos += int(sla[0])
+            elif 'R' in sla:
+                ratos += int(sla[0])
+            elif 'S' in sla:
+                sapos += int(sla[0])
+        total = ratos + sapos + coelhos
+        percent_ratos = (ratos / total) * 100
+        percent_sapos = (sapos / total) * 100
+        percent_coelhos = (coelhos / total) * 100
+        print(f'Total: {total} cobaias')
+        print(f'Total de coelhos: {coelhos}')
+        print(f'Total de ratos: {ratos}')
+        print(f'Total de sapos: {sapos}')
+        print(f'Percentual de coelhos: {percent_coelhos:.2f} %')
+        print(f'Percentual de ratos: {percent_ratos:.2f} %')
+        print(f'Percentual de sapos: {percent_sapos:.2f} %')
+    case 10:
+        while True:
+            senha = int(input())
+            if senha == 2002:
+                print("Acesso Permitido")
+                break
+            else: 
+                print("Senha Invalida")
+    case 11:
+        while True:
+            numeros = list(map(int,input().split()))
+            try:
+                if len(numeros) == 2:
+                    print(numeros[0]/ numeros[1])
+                    break
+                else:
+                    continue
+            except ZeroDivisionError:
+                if numeros[1] == 0:
+                    print("divisao impossivel")
+    case 12:
+        ranger = int(input())
+        for i in range(ranger+1):
+            fibonnaci = [0, 1]
+            while len(fibonnaci) < i:
+                fibonnaci.append(fibonnaci[-1] + fibonnaci[-2])
+        print(' '.join(map(str,fibonnaci)))
