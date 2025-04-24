@@ -2,38 +2,33 @@ numero  = int(input("Número da Questão: "))
 import math
 match numero:
     case 1:
-        primeiro = int(input("Primeiro Número: "))
-        segundo = int(input("Segundo Número: "))
+        primeiro = int(input())
+        segundo = int(input())
         PROD = primeiro * segundo
-        print(f"PROD: {PROD}")
+        print(f"PROD = {PROD}")
     case 2:
-        primeiro = float(input("Primeiro Número: "))
-        segundo  =float(input("Segundo Número: "))
-        media = (primeiro + segundo)/ 2
-        print(media)
+        primeiro = float(input())
+        segundo = float(input())
+        media = (primeiro * 3.5 + segundo * 7.5) / 11
+        print(f"MEDIA = {media:.5f}")
     case 3:
-        number= int(input("Numero: "))
-        volume = (4/3) * math.pi * (number**3)
-        print(volume)
+        pi = 3.14159
+        raio = float(input())
+        volume = (4.0 / 3) * pi * (raio ** 3)
+        print(f"VOLUME = {volume:.3f}")
     case 4:
-        primeiro = int(input("Número 1: "))
-        segundo = int(input("Número 2: "))
-        print(primeiro % segundo)
+        C, N = map(int, input().split())
+        termino = C % N
+        print(termino)
+
     case 5:
-        number_x = input("Valores de X (separar por espaço): ")
-        number_y = input("Valores de Y (separar por espaço): ")
-        number_x = number_x.split()
-        number_y = number_y.split()
-        print(math.sqrt(  (float(number_x[1]) - float(number_x[0]))**2 + (float(number_y[1] - float(number_y[0]))) **2  ))
-        print(int (number_y[1]))
+        import math
+        x1, y1 = map(float, input().split())
+        x2, y2 = map(float, input().split())
+        distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        print(f"{distancia:.4f}")
+
     case 6:
-        numbers = input("")
-        numbers = numbers.split()
-        numbers = [float(x) for x in numbers]
-        if len(numbers) > 4:
-            quit("Questões de Números Inválidos")
-        for i in numbers:
-            if 2 > i > 6:
-                quit("Número Inválido")
-        print(sum(numbers) - 3)
-        
+        T1, T2, T3, T4 = map(int, input().split())
+        total = T1 + T2 + T3 + T4 - 3
+        print(total)
