@@ -171,9 +171,11 @@ match question:
             11:"Novembro",
             12:"Dezembro"
         }
+
         data = input('Digite uma data no formato dd/mm/aaaa')
         dia = int(data[0] + data[1])
         mes = int(data[3] + data[4])
         ano = int(data[6:10])
         print(f"A data é {dia} de {meses[mes]} de {ano}")
     case 12:
+        pass
