@@ -178,4 +178,51 @@ match question:
         ano = int(data[6:10])
         print(f"A data é {dia} de {meses[mes]} de {ano}")
     case 12:
-        pass
+        
+        calculo  = input("Digite dois valores inteiros separados por um operador +, - , * ou / ")
+        
+        if '+' in calculo:
+            operator = '+'
+        elif '-' in calculo:
+            operator = '-'
+        elif '*' in calculo:
+            operator = '*'
+        else:
+            operator = '/'
+
+        primeiro = int(calculo[0:calculo.index(operator)])
+        segundo  =  int(calculo[calculo.index(operator)+1:])
+        match operator:
+            case '+':
+                print(primeiro + segundo)
+            case '-':
+                print(primeiro - segundo)
+            case '*':
+                print(primeiro * segundo)
+            case '/':
+                print(primeiro / segundo)
+    case 13:
+        numeros = list(map(int,input("Digite dez valores inteiros: ").split()))
+        print(f"O maior valor é {max(numeros)} e o menor é {min(numeros)}")
+    case 14:
+        print("Digite três valores inteiros:")
+        n1 = int(input())
+        n2 = int(input())
+        n3 = int(input())
+        if n1 + n2 > n3 and n1 + n3 > n2 and n2 + n3 > n1:
+            print("Esses valores não formam um triângulo")
+        else:
+            if  n1 == n2 and n2 == n3:
+                print("Equilátero")
+            elif n1 == n2 or n1 == n3 or n3 == n2:
+                print("Isóceles")
+            else:
+                print("Escaleno")
+    case 15:
+        print("Digite três valores inteiros:")
+        n1 = int(input())
+        n2 = int(input())
+        n3 = int(input())
+        number_list  = [n1,n2,n3]
+        number_list.sort()
+        print(number_list)
