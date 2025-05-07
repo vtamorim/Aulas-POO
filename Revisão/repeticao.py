@@ -23,4 +23,20 @@ match question:
             else:
                 print(i)
     case 5:
-        pass
+        quantidade = 10  
+        sequencia = [1]  
+
+        for i in range(1, quantidade):
+            proximo = sequencia[-1] + i
+            sequencia.append(proximo)
+
+        print("Resultado:", *sequencia)
+    case 6:
+        sequencia = []
+
+        for i in range(1, 31, 3):
+            trio = [i, i+1, i+2]
+            soma = sum(trio)
+            sequencia.extend(trio + [soma])  
+
+        print("Resultado:", *sequencia)
