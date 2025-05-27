@@ -5,6 +5,11 @@ match question:
         class Circulo:
             def __init__(self,raio):
                 self.__raio = raio
+            def set_raio(self):
+                if not isinstance(self.__raio,(float)):
+                    raise ValueError("Insira um Número válido. Ex: 42.0")
+            def get_raio(self):
+                return self.__raio
             def area(self):
                 return math.pi * (self.__raio**2)
             def circuferencia(self):
@@ -15,13 +20,23 @@ match question:
 
         raio = int(input('Raio: '))
         first_cir = Circulo(raio)
-        print(f'{first_cir.area():.2f}')
-        print(f'{first_cir.circuferencia():.2f}')
+        print(f'Área: {first_cir.area():.2f}')
+        print(f'Circuferência: {first_cir.circuferencia():.2f}')
     case 2:
         class Viagem:
             def __init__(self,distancia,tempo):
                 self.__distancia = distancia
                 self.__tempo = tempo
+            def set_distancia(self):
+                if not self.__distancia < 0 and not isinstance(self.__distancia(float,int)):
+                    raise ValueError("Número tem que ser maior que 0 e estar no formato 00.0")
+            def set_tempo(self):
+                if not self.__tempo < 0 and not isinstance(self.__tempo(float,int)):
+                    raise ValueError("Número tem que ser maior que 0 e estar no formato 00.0")
+            def get_tempo(self):
+                return self.__tempo
+            def get_distancia(self):
+                return self.__distancia 
             def vel_media(self):
                 return self.__distancia/self.__tempo
             
@@ -115,3 +130,4 @@ match question:
 
         print(f"Entrada Inteira: {EntradinhaInteira.entrada_int()}")  
         print(f"Meia-entrada: {EntradinhaMeia.meia_int()}")          
+    
