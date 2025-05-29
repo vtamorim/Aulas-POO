@@ -1,8 +1,7 @@
-from cmath import rect
 import math
-import string
 
 question = int(input("Número da Questão: "))
+
 match question:
     case 1:
         class Retangulo:
@@ -80,13 +79,14 @@ match question:
             case "3"|"Atributos":
                 print(ob_frete.ToString())
     case 3:
-        class Equacao:
+        class EquacaoSG:
             def __init__(self):
                 self.__a = 0
                 self.__b = 0
                 self.__c = 0
                 self.__delta = 0
             def SetA(self,a):
+                if a == 0: raise ValueError("Valor inválido")
                 self.__a = a
             def SetB(self,b):
                 self.__b = b
@@ -111,15 +111,15 @@ match question:
             def ToString(self):
                 return f"A: {self.__a}\nB: {self.__b}\nC: {self.__c}\n Delta: {self.__delta}"
 
-        seg_grau = Equacao()
+        seg_grau = EquacaoSG()
         a = int(input("A: "))
         b = int(input("B: "))
         c = int(input("C: "))
         seg_grau.SetA(a)
         seg_grau.SetB(b)
         seg_grau.SetB(c)
+        print("Recomendo fazer por ordem :)")
         print("[0] A\n[1] B\n[2] C\n[3] Delta\n[4] Primeira Raiz\n[5] Segunda Raiz\n[6] Atributos")
-        print("Recomendo fazer por ordem")
         escolha = input()
         match escolha:
             case "0"|"A":
@@ -136,3 +136,4 @@ match question:
                 print(seg_grau.Raiz2())
             case "6"|"Atributos":
                 print(seg_grau.ToString())
+
