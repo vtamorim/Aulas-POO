@@ -3,7 +3,7 @@ contador = 0
 lista_contato = []
 
 
-escolha = int(input("Número da Questão"))
+escolha = int(input("Número da Questão: "))
 match escolha:
     case 1:
         class Bingo:
@@ -98,6 +98,8 @@ match escolha:
                     print("Nenhum número sorteado ainda.")
                 else:
                     print("Números sorteados:", ", ".join(str(n) for n in numeros))
+        if __name__ == "__main__":
+            BingoUI.main()
     case 2:
         class Contato:
             def __init__(self,i,n,e,f):
@@ -106,7 +108,7 @@ match escolha:
                 self.__e = e
                 self.__f = f
             def __str__(self):
-                return f"----------------------\nIdentificador: {self.__i}\nNome: {self.__n}\nEmail: {self.__e}\nFone: {self.__f}\n----------------------"
+                return f"Identificador: {self.__i} Nome: {self.__n} Email: {self.__e} Fone: {self.__f}"
         
         class ContatoUI:
             @staticmethod
@@ -125,19 +127,20 @@ match escolha:
                         case 1:
                             ContatoUI.Listar()
                         case 2:
-                            pass
+                            ContatoUI.Atualizar()
                         case 3:
-                            pass
+                            ContatoUI.Excluir()
                         case 4:
-                            pass
+                            ContatoUI.Pesquisar()
             @staticmethod
             def Inserir():
+                global contador
                 contador += 1
                 nome = input("Nome do Contato: ")
                 email = input("Email do Contato: ")
                 fone  = input("Telefone do Contato: ")
                 contato = Contato(contador,nome,email,fone)
-                lista_contato.append(contato)
+                lista_contato.append(contato.__str__())
             @staticmethod
             def Listar():
                 if len(lista_contato) <= 0: raise ValueError("Infelizmente você não tem nenhum contato :( )")
@@ -145,6 +148,39 @@ match escolha:
             @staticmethod
             def Atualizar():
                 id = int(input("Identificador do Contato: "))
-                    
+                for i in lista_contato:
+                    if i.__i == id:
+                        nome = input("Novo Nome do Contato: ")
+                        email = input("Novo Email do Contato: ")
+                        fone  = input("Novo Telefone do Contato: ")
+                        i.__n = nome
+                        i.__e = email
+                        i.__f = fone
+                        print("Contato atualizado com sucesso!")
+                    else:
+                        raise ValueError("Erro ao Atualizar")
                 
-            
+            @staticmethod
+            def Excluir():
+                id = int(input("Identificador do Contato: "))
+                for i in lista_contato:
+                    if i.__i == id:
+                        print("Tem certeza que deseja excluir? S/N")
+                        if input() == "S":
+                            lista_contato.remove(i)
+                    else:
+                        raise ValueError("Erro ao Excluir o Contato")
+                
+                
+            @staticmethod
+            def Pesquisar():
+                nome = input("Nome do Contato: ")
+                for i in lista_contato:
+                    if i.__n == nome:
+                        print(i)
+        if __name__ == "__main__":
+            ContatoUI.Main()
+    case 3:
+        class Pais:
+            def __init__(self):
+                pass
