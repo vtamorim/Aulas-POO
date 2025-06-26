@@ -187,80 +187,48 @@ match escolha:
         class Pais:
             def __init__(self,i,n,p,a):
                 self.__i = i
-                self.__n = n
                 self.__p = p
+                self.__n = n
                 self.__a = a
+            def get_nome(self):
+                return self.__n
+            def set_nome(self,nome):
+                if nome == "": raise ValueError("Nome inválido")
+
             def Densidade(self):
                 return self.__p/self.__a
-            def ToString(self):
-                return f"Identificador: {self.__i} Nome do País: {self.__n} População do País: {self.__p} Área do País: {self.__a}"
+            def __str__(self):
+                return f"Identificador: {self.__i} Nome: {self.__n} População: {self.__p} Área: {self.__a}"
         class PaisUI:
-            @staticmethod
-            def Menu():
-                opcoes = ["Inserir um Novo País","Listar os Países","Atualizar Dados do País","Excluir um País na Agenda","País mais populoso","País mais povoado"]
+            __contatos = []
+            @classmethod
+            def Menu(cls):
+                opcoes = ["Inserir","Atualizar","Excluir","Mostrar o mais Populoso","Mostrar o mais Povoado","Sair"]
                 for i in range(len(opcoes)):
                     print("[", i ,"]", opcoes[i])
                 return int(input())
-            @staticmethod
-            def Main():
-                while True:
-                    escolha = PaisUI.Menu()
-                    match escolha:
-                        case 0:
-                            PaisUI.Inserir() 
-                        case 1:
-                            PaisUI.Listar()
-                        case 2:
-                            PaisUI.Atualizar()
-                        case 3:
-                            PaisUI.Excluir()
-                        case 4:
-                            PaisUI.Pesquisar()
-            @staticmethod
-            def Inserir():
-                global contador
-                contador += 1
+            @classmethod
+            def Main(cls):
+                sla = 0
+                while sla != 6:
+                    sla = PaisUI.Menu()
+                    if sla == 1: PaisUI.Inserir()
+                    if sla == 2: pass
+                    if sla == 3: pass
+                    if sla == 4: pass
+                    if sla == 5: pass
+            @classmethod
+            def Inserir(cls):
+                id = int(input("Identificador: "))
                 nome = input("Nome do País: ")
-                populacao = input("População do Pais: ")
-                area  = input("Área do País: ")
-                paisesinho = Pais(contador,nome,populacao,area)
-                lista_pais.append(paisesinho.ToString())
-            @staticmethod
-            def Listar():
-                if len(lista_pais) <= 0: raise ValueError("Infelizmente você não tem nenhum país cadastrado :( )")
-                print(lista_pais)  
-            @staticmethod
-            def Atualizar():
-                id = int(input("Identificador do Pais: "))
-                for i in lista_pais:
-                    if i.__i == id:
-                        nome = input("Novo Nome do País: ")
-                        populacao = input("Nova População do País: ")
-                        area  = input("Nova Área do País: ")
-                        i.__n = nome
-                        i.__p = populacao
-                        i.__a = area
-                        print("País atualizado com sucesso!")
-                    else:
-                        raise ValueError("Erro ao Atualizar")
-                
-            @staticmethod
-            def Excluir():
-                id = int(input("Identificador do País: "))
-                for i in lista_pais:
-                    if i.__i == id:
-                        print("Tem certeza que deseja excluir? S/N")
-                        if input() == "S":
-                            lista_pais.remove(i)
-                    else:
-                        raise ValueError("Erro ao Excluir o País")
-                
-                
-            @staticmethod
-            def Pesquisar():
-                nome = input("Nome do Contato: ")
-                for i in lista_pais:
-                    if i.__n == nome:
-                        print(i)
-        if __name__ == "__main__":
-            PaisUI.Main()
+                pop = int(input("População do País: "))
+                area = float(input("Área do País: "))
+                p = Pais(id,nome,pop,area)
+                cls.__contatos.append(p)
+            @classmethod
+            def Atualizar(cls):
+                nome = input("Informe o seu nome: ")
+                for i in cls.__contatos:
+                    if i.get_nome().startswith(nome):
+                        novo_nome = input("Novo Nome: ")
+                        i.set_nome()
