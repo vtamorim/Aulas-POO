@@ -192,8 +192,15 @@ match escolha:
                 self.__a = a
             def get_nome(self):
                 return self.__n
+            
             def set_nome(self,nome):
                 if nome == "": raise ValueError("Nome inválido")
+                
+            def set_id(self,id):
+                if id <= 0: raise ValueError("Identificador Inválido")
+
+            def set_p(self,pop):
+                if pop <= 0: raise ValueError("População Inválida")
 
             def Densidade(self):
                 return self.__p/self.__a
@@ -230,5 +237,4 @@ match escolha:
                 nome = input("Informe o seu nome: ")
                 for i in cls.__contatos:
                     if i.get_nome().startswith(nome):
-                        novo_nome = input("Novo Nome: ")
-                        i.set_nome()
+                        i.set_nome(input("Novo Nome: "))
