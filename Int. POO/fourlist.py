@@ -1,8 +1,7 @@
 import random
 contador = 0
-lista_contato = []
-lista_pais = []
 
+print("Escolha uma das opções abaixo:")
 escolha = int(input("Número da Questão: "))
 match escolha:
     case 1:
@@ -30,10 +29,10 @@ match escolha:
 
 
         class BingoUI:
-            bingo = None  # atributo de classe
+            __bingo = None  # atributo de classe
 
-            @staticmethod
-            def main():
+            @classmethod
+            def main(cls):
                 while True:
                     BingoUI.mostrar_menu()
                     try:
@@ -54,8 +53,8 @@ match escolha:
                     else:
                         print("Opção inválida!")
 
-            @staticmethod
-            def mostrar_menu():
+            @classmethod
+            def mostrar_menu(cls):
                 print("\n--- MENU BINGO ---")
                 print("1 - Iniciar novo jogo")
                 print("2 - Sortear número")
@@ -63,8 +62,8 @@ match escolha:
                 print("4 - Sair")
                 print("Escolha uma opção: ", end='')
 
-            @staticmethod
-            def iniciar_jogo():
+            @classmethod
+            def iniciar_jogo(cls):
                 try:
                     num_bolas = int(input("Digite o número de bolas do bingo: "))
                     if num_bolas <= 0:
@@ -73,27 +72,27 @@ match escolha:
                 except ValueError:
                     print("Valor inválido!")
                     return
-                BingoUI.bingo = Bingo()
-                BingoUI.bingo.iniciar(num_bolas)
+                cls.__bingo = Bingo()
+                cls.__bingo.iniciar(num_bolas)
                 print("Novo jogo iniciado!")
 
-            @staticmethod
-            def sortear():
-                if BingoUI.bingo is None:
+            @classmethod
+            def sortear(cls):
+                if  cls.__bingo is None:
                     print("Inicie um novo jogo primeiro!")
                     return
-                numero = BingoUI.bingo.sortear()
+                numero = cls.__bingo.sortear()
                 if numero == -1:
                     print("Todos os números já foram sorteados!")
                 else:
                     print(f"Número sorteado: {numero}")
 
-            @staticmethod
-            def sorteados():
-                if BingoUI.bingo is None:
+            @classmethod
+            def sorteados(cls):
+                if cls.__bingo is None:
                     print("Inicie um novo jogo primeiro!")
                     return
-                numeros = BingoUI.bingo.sorteados()
+                numeros = cls.__bingo.sorteados()
                 if not numeros:
                     print("Nenhum número sorteado ainda.")
                 else:
@@ -111,14 +110,15 @@ match escolha:
                 return f"Identificador: {self.__i} Nome: {self.__n} Email: {self.__e} Fone: {self.__f}"
         
         class ContatoUI:
-            @staticmethod
-            def Menu():
+            __lista_contato = []
+            @classmethod
+            def Menu(cls):
                 opcoes = ["Inserir um Novo Contato","Listar os Contatos","Atualizar Dados do Contato","Excluir um Contato na Agenda","Pesquisar um Contato","Sair"]
                 for i in range(len(opcoes)):
                     print("[", i ,"]", opcoes[i])
                 return int(input())
-            @staticmethod
-            def Main():
+            @classmethod
+            def Main(cls):
                 while True:
                     escolha = ContatoUI.Menu()
                     match escolha:
@@ -135,23 +135,23 @@ match escolha:
                         case 5:
                             print("Fim do Código")
                             break
-            @staticmethod
-            def Inserir():
+            @classmethod
+            def Inserir(cls):
                 global contador
                 contador += 1
                 nome = input("Nome do Contato: ")
                 email = input("Email do Contato: ")
                 fone  = input("Telefone do Contato: ")
                 contato = Contato(contador,nome,email,fone)
-                lista_contato.append(contato.__str__())
-            @staticmethod
-            def Listar():
-                if len(lista_contato) <= 0: raise ValueError("Infelizmente você não tem nenhum contato :( )")
-                print(lista_contato)  
-            @staticmethod
-            def Atualizar():
+                cls.__lista_contato.append(contato)
+            @classmethod
+            def Listar(cls):
+                if len(cls.__lista_contato) <= 0: raise ValueError("Infelizmente você não tem nenhum contato :( )")
+                print(cls.__lista_contato)  
+            @classmethod
+            def Atualizar(cls):
                 id = int(input("Identificador do Contato: "))
-                for i in lista_contato:
+                for i in cls.__lista_contato:
                     if i.__i == id:
                         nome = input("Novo Nome do Contato: ")
                         email = input("Novo Email do Contato: ")
@@ -163,22 +163,22 @@ match escolha:
                     else:
                         raise ValueError("Erro ao Atualizar")
                 
-            @staticmethod
-            def Excluir():
+            @classmethod
+            def Excluir(cls):
                 id = int(input("Identificador do Contato: "))
-                for i in lista_contato:
+                for i in cls.__lista_contato:
                     if i.__i == id:
                         print("Tem certeza que deseja excluir? S/N")
                         if input() == "S":
-                            lista_contato.remove(i)
+                            cls.__lista_contato.remove(i)
                     else:
                         raise ValueError("Erro ao Excluir o Contato")
                 
                 
-            @staticmethod
-            def Pesquisar():
+            @classmethod
+            def Pesquisar(cls):
                 nome = input("Nome do Contato: ")
-                for i in lista_contato:
+                for i in cls.__lista_contato:
                     if i.__n == nome:
                         print(i)
         if __name__ == "__main__":
@@ -202,6 +202,9 @@ match escolha:
             def set_p(self,pop):
                 if pop <= 0: raise ValueError("População Inválida")
 
+            def set_a(self,area):
+                if area <=0: raise ValueError("Área inválida")
+
             def Densidade(self):
                 return self.__p/self.__a
             def __str__(self):
@@ -217,13 +220,13 @@ match escolha:
             @classmethod
             def Main(cls):
                 sla = 0
-                while sla != 6:
+                while sla != 5:
                     sla = PaisUI.Menu()
-                    if sla == 1: PaisUI.Inserir()
-                    if sla == 2: pass
-                    if sla == 3: pass
-                    if sla == 4: pass
-                    if sla == 5: pass
+                    if sla == 0: PaisUI.Inserir()
+                    if sla == 1: PaisUI.Atualizar() 
+                    if sla == 2: PaisUI.Excluir()
+                    if sla == 3: PaisUI.M_Populoso()
+                    if sla == 4: PaisUI.M_Povoado()
             @classmethod
             def Inserir(cls):
                 id = int(input("Identificador: "))
@@ -238,3 +241,39 @@ match escolha:
                 for i in cls.__contatos:
                     if i.get_nome().startswith(nome):
                         i.set_nome(input("Novo Nome: "))
+                        i.set_id(int(input("Novo Identificador: ")))
+                        i.set_p(int(input("Nova População: ")))
+                        i.set_a(float(input("Nova Área: ")))
+                        print(i)
+            @classmethod
+            def Excluir(cls):
+                nome = input("Informe o seu nome: ")
+                for i in cls.__contatos:
+                    if i.get_nome().startswith(nome):
+                        print(i)
+                        cls.__contatos.remove(i)
+                        print("Removido com sucesso")
+            @classmethod
+            def M_Populoso(cls):
+                if not cls.__contatos:
+                    print("Nenhum país cadastrado.")
+                    return
+                lista_nomes = []
+                lista_popu = []
+                for i in cls.__contatos:
+                    lista_nomes.append(i.get_nome())
+                    lista_popu.append(i._Pais__p)  
+                print(f"Pais mais população: {lista_nomes[lista_popu.index(max(lista_popu))]}; População: {max(lista_popu)} ")
+
+            @classmethod
+            def M_Povoado(cls):
+                if not cls.__contatos:
+                    print("Nenhum país cadastrado.")
+                    return
+                lista_nomes = []
+                lista_area = []
+                for i in cls.__contatos:
+                    lista_nomes.append(i.get_nome())
+                    lista_area.append(i.Densidade())
+                print(f"Pais mais povoado: {lista_nomes[lista_area.index(max(lista_area))]}; Densidade: {max(lista_area)} ")
+        PaisUI.Main()
