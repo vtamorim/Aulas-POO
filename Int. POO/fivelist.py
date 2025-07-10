@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-
+contador = 0
 number = int(input("Numero da Questão: "))
 match number:
     case 1:
@@ -9,7 +9,7 @@ match number:
                 self.__n = nome
                 self.__c = cpf
                 self.__t = telefone
-                self.__nasc = nasc
+                self.__nasc = datetime.strptime(nasc, "%d/%m/%Y")
 
             def get_nome(self):
                 return self.__n
@@ -41,7 +41,7 @@ match number:
 
 
             def Idade(self):
-                tempo = datetime.now() - datetime.strptime(self.__nasc, "%d/%m/%Y")
+                tempo = datetime.now() - self.__nasc
                 return f"Ano: {tempo.days // 365} Meses: {tempo.days % 365 // 30}"
             def __str__(self):
                 return f"Nome: {self.__n} CPF: {self.__c} Telefone: {self.__t} Nascimento: {self.__n}"
@@ -148,11 +148,12 @@ match number:
                 print(qualquercoisa.__str__())
     case 3:
         class Contato:
-            def __init__(self,i,n,e,f):
+            def __init__(self,i,n,e,f,d):
                 self.__i = i
                 self.__n = n
                 self.__e = e
-                self.__f = f
+                self.__f = f 
+                self.__d = datetime.strptime(d, "%d/%m/%Y") 
             def set_nome(self,nome):
                 if nome == "": raise ValueError("Nome inválido")
                 self.__n = nome
@@ -169,18 +170,23 @@ match number:
                 return self.__i
             def get_nome(self):
                 return self.__n
+            def get_mes(self):
+                return self.__d.month
             def get_email(self):
                 return self.__e
             def get_fone(self):
                 return self.__f
+            def get_nasci(self):
+                return self.__d
+            
             def __str__(self):
-                return f"Identificador: {self.__i} Nome: {self.__n} Email: {self.__e} Fone: {self.__f}"
+                return f"Identificador: {self.__i} Nome: {self.__n} Email: {self.__e} Fone: {self.__f} Nascimento: {self.__d}"
         
         class ContatoUI:
             __lista_contato = []
             @classmethod
             def Menu(cls):
-                opcoes = ["Inserir um Novo Contato","Listar os Contatos","Atualizar Dados do Contato","Excluir um Contato na Agenda","Pesquisar um Contato","Sair"]
+                opcoes = ["Inserir um Novo Contato","Listar os Contatos","Atualizar Dados do Contato","Excluir um Contato na Agenda","Pesquisar um Contato","Aniversariantes","Sair"]
                 for i in range(len(opcoes)):
                     print("[", i ,"]", opcoes[i])
                 return int(input())
@@ -201,6 +207,8 @@ match number:
                         case 4:
                             ContatoUI.Pesquisar()
                         case 5:
+                            ContatoUI.Aniversariantes()
+                        case 6:
                             print("Fim do Código")
                             break
             @classmethod
@@ -210,7 +218,8 @@ match number:
                 nome = input("Nome do Contato: ")
                 email = input("Email do Contato: ")
                 fone  = input("Telefone do Contato: ")
-                contato = Contato(contador,nome,email,fone)
+                nascimento = input("Nascimento (ex: DD/MM/AAAA)")
+                contato = Contato(contador,nome,email,fone,nascimento)
                 cls.__lista_contato.append(contato)
                 print("Contato inserido com sucesso!")
             @classmethod
@@ -219,7 +228,7 @@ match number:
                     print("Infelizmente você não tem nenhum contato :( )")
                 else:
                     for contato in cls.__lista_contato:
-                        print(contato)
+                        print(contato) 
             @classmethod
             def Atualizar(cls):
                 id = int(input("Identificador do Contato: "))
@@ -254,6 +263,12 @@ match number:
                         print(c)
                 else:
                     print("Contato não encontrado.")
+            @classmethod
+            def Aniversariantes(cls):
+                mes = int(input("Mês para Informar: "))
+                for contato in cls.__lista_contato:
+                    if contato.get_mes() == mes:
+                        print(contato) 
         if __name__ == "__main__":
             ContatoUI.Main()
                 
