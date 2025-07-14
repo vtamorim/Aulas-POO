@@ -9,7 +9,7 @@ match number:
                 self.__n = nome
                 self.__c = cpf
                 self.__t = telefone
-                self.__nasc = datetime.strptime(nasc, "%d/%m/%Y")
+                self.__nasc = nasc
 
             def get_nome(self):
                 return self.__n
@@ -71,7 +71,7 @@ match number:
                 telefone = int(input("telefone: "))
                 nascimento = input("nasicmento: ")
 
-                qualquercoisa = Paciente(nome,cpf,telefone,nascimento)
+                qualquercoisa = Paciente(nome,cpf,telefone,datetime.strptime(nascimento, "%d/%m/%Y"))
                 print(qualquercoisa.__str__())
                 print(qualquercoisa.Idade())
 
@@ -79,73 +79,127 @@ match number:
 
         PacienteUI.main()
     case 2:
-        class Boleto:
-            def __init__(self, cod, emissao, venci, valor):
-                self.__cod = cod
-                self.__emissao = emissao
-                self.__venci = venci
-                self.__valor = valor
-                self.__valorpago = 0
-
-            def set_cod(self,cod):
-                if cod == "": raise ValueError
-                self.__cod = cod
-
-            def set_emissao(self,emissao):
-                self.__emissao = emissao
-
-            def set_venci(self,venci):
-                self.__venci = venci
-
-            def set_valor(self,valor):
-                if valor <= 0: raise ValueError
-                self.__valor = valor
-
-            def Pagar(self,valorpago):
-                if valorpago > self.__valor: raise ValueError("Erro cara '-'")
-                self.__valorpago = valorpago
-            def Situacao(self):
-                if self.__valorpago == 0: return Pagamento(0)
-                elif self.__valorpago < self.__valor: return Pagamento(1)
-                else: return Pagamento(2)
-
-            def __str__(self):
-                return f"{self.__cod} {self.__emissao} {self.__valor} {self.__valorpago} {self.__venci}"
-            
         class Pagamento(Enum):
             EmAberto = 0
             PagoParcial = 1
             Pago = 2
-        
+
+        class Boleto:
+            def __init__(self, cod_barras: str, data_emissao: datetime, data_vencimento: datetime, valor_boleto: float):
+                self.cod_barras = cod_barras
+                self.data_emissao = data_emissao
+                self.data_vencimento = data_vencimento
+                self.valor_boleto = valor_boleto
+                self.data_pagamento = None
+                self.valor_pago = 0.0
+                self.situacao_pagamento = Pagamento.EmAberto
+
+            def pagar(self, valor: float, data: datetime = None):
+                self.valor_pago += valor
+                self.data_pagamento = data or datetime.now()
+
+                if self.valor_pago == 0:
+                    self.situacao_pagamento = Pagamento.EmAberto
+                elif self.valor_pago < self.valor_boleto:
+                    self.situacao_pagamento = Pagamento.PagoParcial
+                else:
+                    self.situacao_pagamento = Pagamento.Pago
+
+            def get_situacao(self):
+                return self.situacao_pagamento
+
+            def __str__(self):
+                return (f"Código de Barras: {self.cod_barras}\n"
+                        f"Data de Emissão: {self.data_emissao.strftime('%d/%m/%Y')}\n"
+                        f"Data de Vencimento: {self.data_vencimento.strftime('%d/%m/%Y')}\n"
+                        f"Valor do Boleto: R$ {self.valor_boleto:.2f}\n"
+                        f"Valor Pago: R$ {self.valor_pago:.2f}\n"
+                        f"Situação: {self.situacao_pagamento.name}\n"
+                        f"Data de Pagamento: {self.data_pagamento.strftime('%d/%m/%Y %H:%M') if self.data_pagamento else '---'}")
+
         class BoletoUI:
-            @staticmethod
-            def menu():
-                opcoes = ["Cadastro","Sair"]
-                for i in range(len(opcoes)):
-                    print(i, opcoes[i])
-                return int(input())
-            @staticmethod
-            def main():
+            __lista_boletos = []
+            __contador = 0
+
+            @classmethod
+            def menu(cls):
+                opcoes = [
+                    "Criar novo boleto",
+                    "Listar boletos",
+                    "Pagar um boleto",
+                    "Ver situação de um boleto",
+                    "Sair"
+                ]
+                for i, op in enumerate(opcoes):
+                    print(f"[{i}] {op}")
+                return int(input("Escolha uma opção: "))
+
+            @classmethod
+            def main(cls):
                 while True:
-                            escolha = PacienteUI.menu()
-                            match escolha:
-                                case 0:
-                                    PacienteUI.Cadastro_dados() 
-                                case 1:
-                                    print("Fim do Código")
-                                    break
-            @staticmethod
-            def Cadastro_dados():
+                    escolha = cls.menu()
+                    match escolha:
+                        case 0:
+                            cls.criar_boleto()
+                        case 1:
+                            cls.listar_boletos()
+                        case 2:
+                            cls.pagar_boleto()
+                        case 3:
+                            cls.ver_situacao()
+                        case 4:
+                            print("Saindo...")
+                            break
+                        case _:
+                            print("Opção inválida.")
 
-                codigo_barras = input("codigo : ")
-                emissao = input("cpf: ")
-                venci = input("venci: ")
-                valor = float(input("nasicmento: "))
+            @classmethod
+            def criar_boleto(cls):
+                cls.__contador += 1
+                cod_barras = input("Código de barras: ")
+                emissao = datetime.strptime(input("Data de emissão (DD/MM/AAAA): "), "%d/%m/%Y")
+                vencimento = datetime.strptime(input("Data de vencimento (DD/MM/AAAA): "), "%d/%m/%Y")
+                valor = float(input("Valor do boleto: "))
+                boleto = Boleto(cod_barras, emissao, vencimento, valor)
+                cls.__lista_boletos.append(boleto)
+                print("Boleto criado com sucesso!")
 
-                qualquercoisa = Boleto(codigo_barras,emissao,venci,valor)
-                print(qualquercoisa.Pagar(float(input("Pagar: "))))
-                print(qualquercoisa.Situacao())
-                print(qualquercoisa.__str__())
+            @classmethod
+            def listar_boletos(cls):
+                if not cls.__lista_boletos:
+                    print("Nenhum boleto cadastrado.")
+                else:
+                    for i, boleto in enumerate(cls.__lista_boletos):
+                        print(f"\n[ID {i}] --------------------")
+                        print(boleto)
+
+            @classmethod
+            def pagar_boleto(cls):
+                if not cls.__lista_boletos:
+                    print("Nenhum boleto para pagar.")
+                    return
+                id = int(input("Digite o ID do boleto que deseja pagar: "))
+                if 0 <= id < len(cls.__lista_boletos):
+                    valor = float(input("Valor a pagar: "))
+                    cls.__lista_boletos[id].pagar(valor)
+                    print("Pagamento registrado.")
+                else:
+                    print("ID inválido.")
+
+            @classmethod
+            def ver_situacao(cls):
+                if not cls.__lista_boletos:
+                    print("Nenhum boleto cadastrado.")
+                    return
+                id = int(input("Digite o ID do boleto: "))
+                if 0 <= id < len(cls.__lista_boletos):
+                    print(f"Situação: {cls.__lista_boletos[id].get_situacao().name}")
+                else:
+                    print("ID inválido.")
+
+        if __name__ == "__main__":
+            BoletoUI.main()
+
     case 3:
         class Contato:
             def __init__(self,i,n,e,f,d):
@@ -153,7 +207,7 @@ match number:
                 self.__n = n
                 self.__e = e
                 self.__f = f 
-                self.__d = datetime.strptime(d, "%d/%m/%Y") 
+                self.__d = d
             def set_nome(self,nome):
                 if nome == "": raise ValueError("Nome inválido")
                 self.__n = nome
@@ -219,7 +273,7 @@ match number:
                 email = input("Email do Contato: ")
                 fone  = input("Telefone do Contato: ")
                 nascimento = input("Nascimento (ex: DD/MM/AAAA)")
-                contato = Contato(contador,nome,email,fone,nascimento)
+                contato = Contato(contador,nome,email,fone,datetime.strptime(nascimento, "%d/%m/%Y") )
                 cls.__lista_contato.append(contato)
                 print("Contato inserido com sucesso!")
             @classmethod
