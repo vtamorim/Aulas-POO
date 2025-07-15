@@ -28,7 +28,9 @@ class Treino:
         if newt <=0: raise ValueError("T inválido ")
 
     def velocidade_media(self):
-        return self.__ds/self.__t
+        if self.__t.total_seconds() == 0:
+            return 0
+        return self.__ds / self.__t.total_seconds()
 
     def __str__(self):
         return f"Identificador: {self.__id}\nData: {self.__dt}\nDistância: {self.__ds}\nTempo: {self.__t}"
@@ -48,27 +50,30 @@ class TreinoUI:
             sla = TreinoUI.Menu()
             match sla:
                 case 0:
-                    pass
+                    cls.Inserir()
                 case 1:
-                    pass
+                    cls.Listar()
                 case 2:
-                    pass
+                    cls.ListarID()
                 case 3:
-                    pass
+                    cls.Atualizar()
                 case 4:
-                    pass
+                    cls.Excluir()
                 case 5:
-                    pass
+                    cls.Mais_Rapido()
                 case 6:
-                    pass
+                    print("Fim do Programa")
+                    break
+                case _:
+                    print("Opção Inválida, tente novamente.")
     @classmethod
     def Inserir(cls):
-        contador += 1
+        cls.__contador += 1
         data = input("Data (00/00/0000):")
         distancia = float(input("Distância: "))
         h,m,s = map(int,input("Tempo do Treino: ").split(":"))
         tempo = timedelta(hours=h,minutes=m,seconds=s)
-        treino = Treino(contador,data,distancia,tempo)
+        treino = Treino(cls.__contador,data,distancia,tempo)
         cls.__treinos.append(treino)
     @classmethod
     def Listar(cls):
@@ -106,12 +111,11 @@ class TreinoUI:
                 print("Treino não encontrado.")
     @classmethod
     def Mais_Rapido(cls):
-        mr = cls.__treinos[0]
-        for t in cls.__treinos:
-            if t.velocidade_media() > mr.velocidade_media():
-                mr = t
-        print(mr)
+        if not cls.__treinos:
+            print("Nenhum treino cadastrado.")
+            return
+        treino_rapido = min(cls.__treinos, key=lambda t: t.get_t())
+        print(f"Treino mais rápido:\n{treino_rapido}\nVelocidade média: {treino_rapido.velocidade_media():.2f} m/s")
         
-    
-
-
+TreinoUI.Main()
+print("Fim do Programa")
