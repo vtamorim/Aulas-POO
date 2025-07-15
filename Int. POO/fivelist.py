@@ -79,7 +79,10 @@ match number:
 
         PacienteUI.main()
     case 2:
+<<<<<<< HEAD
 
+=======
+>>>>>>> b78df16d3b657cbc62702d56b288251c70b908a8
         class Pagamento(Enum):
             EmAberto = 0
             PagoParcial = 1
@@ -198,7 +201,10 @@ match number:
                 else:
                     print("ID inválido.")
 
+<<<<<<< HEAD
         # Executar interface
+=======
+>>>>>>> b78df16d3b657cbc62702d56b288251c70b908a8
         if __name__ == "__main__":
             BoletoUI.main()
 
@@ -209,7 +215,7 @@ match number:
                 self.__n = n
                 self.__e = e
                 self.__f = f 
-                self.__d = datetime.strptime(d, "%d/%m/%Y") 
+                self.__d = d
             def set_nome(self,nome):
                 if nome == "": raise ValueError("Nome inválido")
                 self.__n = nome
@@ -275,7 +281,7 @@ match number:
                 email = input("Email do Contato: ")
                 fone  = input("Telefone do Contato: ")
                 nascimento = input("Nascimento (ex: DD/MM/AAAA)")
-                contato = Contato(contador,nome,email,fone,nascimento)
+                contato = Contato(contador,nome,email,fone,datetime.strptime(nascimento, "%d/%m/%Y") )
                 cls.__lista_contato.append(contato)
                 print("Contato inserido com sucesso!")
             @classmethod
