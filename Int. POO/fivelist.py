@@ -79,10 +79,7 @@ match number:
 
         PacienteUI.main()
     case 2:
-<<<<<<< HEAD
 
-=======
->>>>>>> b78df16d3b657cbc62702d56b288251c70b908a8
         class Pagamento(Enum):
             EmAberto = 0
             PagoParcial = 1
@@ -201,10 +198,7 @@ match number:
                 else:
                     print("ID inválido.")
 
-<<<<<<< HEAD
         # Executar interface
-=======
->>>>>>> b78df16d3b657cbc62702d56b288251c70b908a8
         if __name__ == "__main__":
             BoletoUI.main()
 
