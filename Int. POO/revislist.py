@@ -73,7 +73,7 @@ class TreinoUI:
         distancia = float(input("Distância: "))
         h,m,s = map(int,input("Tempo do Treino: ").split(":"))
         tempo = timedelta(hours=h,minutes=m,seconds=s)
-        treino = Treino(cls.__contador,data,distancia,tempo)
+        treino = Treino(cls.__contador,datetime.strptime(data, "%d/%m/%Y"),distancia,tempo)
         cls.__treinos.append(treino)
     @classmethod
     def Listar(cls):
