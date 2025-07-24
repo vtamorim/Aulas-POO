@@ -1,5 +1,6 @@
 import json
 import os
+contador = 0
 number= input("Numero da questão: ")
 match number:
     case "1":
@@ -36,7 +37,16 @@ match number:
             __lista_Cliente = []
             @classmethod
             def Menu(cls):
-                opcoes = ["Inserir um Novo Cliente","Listar os Clientes","Atualizar Dados do Cliente","Excluir um Cliente na Agenda","Pesquisar um Cliente","Sair"]
+                opcoes = [
+                    "Inserir um Novo Cliente",
+                    "Listar os Clientes",
+                    "Atualizar Dados do Cliente",
+                    "Excluir um Cliente na Agenda",
+                    "Pesquisar um Cliente",
+                    "Salvar clientes",
+                    "Abrir clientes",
+                    "Sair"
+                ]
                 for i in range(len(opcoes)):
                     print("[", i ,"]", opcoes[i])
                 return int(input())
@@ -57,6 +67,14 @@ match number:
                         case 4:
                             ClienteUI.Pesquisar()
                         case 5:
+                            filepath = input("Nome do arquivo para salvar (ex: clientes.json): ")
+                            ClienteUI.Salvar(filepath)
+                            print("Clientes salvos com sucesso!")
+                        case 6:
+                            filepath = input("Nome do arquivo para abrir (ex: clientes.json): ")
+                            ClienteUI.Abrir(filepath)
+                            print("Clientes carregados com sucesso!")
+                        case 7:
                             print("Fim do Código")
                             break
             @classmethod
@@ -66,8 +84,8 @@ match number:
                 nome = input("Nome do Cliente: ")
                 email = input("Email do Cliente: ")
                 fone  = input("Telefone do Cliente: ")
-                Cliente = Cliente(contador,nome,email,fone)
-                cls.__lista_Cliente.append(Cliente)
+                cliente = Cliente(contador,nome,email,fone)
+                cls.__lista_Cliente.append(cliente)
                 print("Cliente inserido com sucesso!")
             @classmethod
             def Listar(cls):
@@ -116,12 +134,26 @@ match number:
                 else:
                     print("Cliente não encontrado.")
             @classmethod
-            def Salvar(cls):
-                if os.path.exists(file_path):
-                    with open(file_path, 'r') as file:
-                        return json.load(file)
-                return {}
-        
+            def Salvar(cls, filepath):
+                
+                with open(filepath, 'w') as file:
+                    json.dump([{
+                        "id": c.get_id(),
+                        "nome": c.get_nome(),
+                        "email": c.get_email(),
+                        "fone": c.get_fone()
+                    } for c in cls.__lista_Cliente], file, indent=4)
+
+            @classmethod
+            def Abrir(cls, filepath):
+                if os.path.exists(filepath):
+                    with open(filepath, 'r') as file:
+                        lista = json.load(file)
+                        cls.__lista_Cliente = [Cliente(d["id"], d["nome"], d["email"], d["fone"]) for d in lista]
+                        print(lista)
+                else:
+                    cls.__lista_Cliente = []
+
         if __name__ == "__main__":
             ClienteUI.Main()
 
