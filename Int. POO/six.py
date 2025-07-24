@@ -197,7 +197,17 @@ match number:
             __lista_contato = []
             @classmethod
             def Menu(cls):
-                opcoes = ["Inserir um Novo Contato","Listar os Contatos","Atualizar Dados do Contato","Excluir um Contato na Agenda","Pesquisar um Contato","Aniversariantes","Sair"]
+                opcoes = [
+                    "Inserir um Novo Contato",
+                    "Listar os Contatos",
+                    "Atualizar Dados do Contato",
+                    "Excluir um Contato na Agenda",
+                    "Pesquisar um Contato",
+                    "Aniversariantes do Mês",
+                    "Salvar contatos",
+                    "Abrir contatos",
+                    "Sair"
+                ]
                 for i in range(len(opcoes)):
                     print("[", i ,"]", opcoes[i])
                 return int(input())
@@ -220,8 +230,18 @@ match number:
                         case 5:
                             ContatoUI.Aniversariantes()
                         case 6:
+                            filepath = input("Nome do arquivo para salvar (ex: contatos.json): ")
+                            ContatoUI.Salvar(filepath)
+                            print("Contatos salvos com sucesso!")
+                        case 7:
+                            filepath = input("Nome do arquivo para abrir (ex: contatos.json): ")
+                            ContatoUI.Abrir(filepath)
+                            print("Contatos carregados com sucesso!")
+                        case 8:
                             print("Fim do Código")
                             break
+                        case _:
+                            print("Opção inválida. Tente novamente.")
             @classmethod
             def Inserir(cls):
                 global contador
@@ -240,6 +260,10 @@ match number:
                 else:
                     for contato in cls.__lista_contato:
                         print(contato) 
+            @classmethod
+            def Listar_ID(cls):
+                for i in range(1,contador+1):
+                    print(i)
             @classmethod
             def Atualizar(cls):
                 id = int(input("Identificador do Contato: "))
@@ -280,6 +304,25 @@ match number:
                 for contato in cls.__lista_contato:
                     if contato.get_mes() == mes:
                         print(contato) 
+            @classmethod
+            def Salvar(cls, filepath):
+                with open(filepath, 'w') as file:
+                    json.dump([{
+                        "id": c.get_id(),
+                        "nome": c.get_nome(),
+                        "email": c.get_email(),
+                        "fone": c.get_fone(),
+                        "nascimento": c.get_nasci().strftime("%d/%m/%Y")
+                    } for c in cls.__lista_contato], file, indent=4)
+            @classmethod
+            def Abrir(cls, filepath):
+                if os.path.exists(filepath):
+                    with open(filepath, 'r') as file:
+                        lista = json.load(file)
+                        cls.__lista_contato = [Contato(d["id"], d["nome"], d["email"], d["fone"], datetime.strptime(d["nascimento"], "%d/%m/%Y")) for d in lista]
+                        print(lista)
+                else:
+                    cls.__lista_contato = []
         if __name__ == "__main__":
             ContatoUI.Main()
 
