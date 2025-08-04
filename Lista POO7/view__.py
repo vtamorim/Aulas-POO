@@ -2,20 +2,20 @@ import template
 
 class Visualizador:
     @staticmethod
-    def Cliente_Listar():
-        template.ClienteDAO.Listar()
+    def Contato_Listar():
+        template.ContatoDAO.Listar()
 
     @staticmethod
-    def Cliente_Inserir(nome, email, fone):
-        template.ClienteDAO.Inserir(nome, email, fone)
+    def Contato_Inserir(nome, email, fone):
+        template.ContatoDAO.Inserir(nome, email, fone)
 
     @staticmethod
-    def Cliente_Atualizar(id):
+    def Contato_Atualizar(id):
         nome = input("Novo nome: ")
         email = input("Novo email: ")
         fone = input("Novo telefone: ")
-        template.ClienteDAO.Atualizar(id, nome, email, fone)
+        template.ContatoDAO.Atualizar(id, nome, email, fone)
 
     @staticmethod
-    def Cliente_Excluir():
-        template.ClienteDAO.Excluir()
+    def Contato_Excluir():
+        template.ContatoDAO.Excluir()

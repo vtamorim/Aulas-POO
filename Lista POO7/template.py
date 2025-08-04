@@ -1,5 +1,5 @@
 import view__  
-from models import ClienteDAO, Cliente
+from models import ContatoDAO, Contato
 
 class UI:
     @classmethod
@@ -21,13 +21,13 @@ class UI:
             escolha = cls.Menu()
             match escolha:
                 case 0:
-                    cls.Cliente_Inserir()
+                    cls.Contato_Inserir()
                 case 1:
-                    cls.Cliente_Listar()
+                    cls.Contato_Listar()
                 case 2:
-                    cls.Cliente_Atualizar()
+                    cls.Contato_Atualizar()
                 case 3:
-                    cls.Cliente_Excluir()
+                    cls.Contato_Excluir()
                 case 4:
                     print("Saindo...")
                     break
@@ -35,19 +35,19 @@ class UI:
                     print("Opção inválida. Tente novamente.")
 
     @classmethod
-    def Cliente_Inserir(cls):
+    def Contato_Inserir(cls):
         nome = input("Nome: ")
         email = input("Seu Email: ")
         fone = input("Seu fone: ")
-        view__.Visualizador.Cliente_Inserir(nome, email, fone)
+        view__.Visualizador.Contato_Inserir(nome, email, fone)
 
     @classmethod
-    def Cliente_Listar(cls):
-        view__.Visualizador.Cliente_Listar()
+    def Contato_Listar(cls):
+        view__.Visualizador.Contato_Listar()
 
     @classmethod
-    def Cliente_Atualizar(cls):
-        id = int(input("ID do cliente a atualizar: "))
+    def Contato_Atualizar(cls):
+        id = int(input("ID do Contato a atualizar: "))
         view__.Visualizador.Cliente_Atualizar(id)
 
     @classmethod

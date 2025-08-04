@@ -1,10 +1,10 @@
 import json
 import os
 
-# Variável global para contar os IDs
+
 contador = 0
 
-class Cliente:
+class Contato:
     def __init__(self, id, n, e, f):
         self.__id = id
         self.__n = n
@@ -40,55 +40,55 @@ class Cliente:
     def __str__(self):
         return f"Identificador: {self.__id} Nome: {self.__n} Email: {self.__e} Fone: {self.__f}"
 
-class ClienteDAO:
-    __lista_cliente = []
+class ContatoDAO:
+    __lista_Contato = []
 
     @classmethod
     def Inserir(cls, nome, email, fone):
         global contador
         contador += 1
-        cliente = Cliente(contador, nome, email, fone)
-        cls.__lista_cliente.append(cliente)
-        print("Cliente inserido com sucesso!")
+        contato = Contato(contador, nome, email, fone)
+        cls.__lista_Contato.append(contato)
+        print("Contato inserido com sucesso!")
 
     @classmethod
     def Listar(cls):
-        if not cls.__lista_cliente:
-            print("Infelizmente você não tem nenhum cliente :( )")
+        if not cls.__lista_Contato:
+            print("Infelizmente você não tem nenhum Contato :( )")
         else:
-            for cliente in cls.__lista_cliente:
-                print(cliente)
+            for Contato in cls.__lista_Contato:
+                print(Contato)
 
     @classmethod
     def Listar_ID(cls):
-        for cliente in cls.__lista_cliente:
-            print(cliente.get_id())
+        for Contato in cls.__lista_Contato:
+            print(Contato.get_id())
 
     @classmethod
     def Atualizar(cls, id, *_):  # o *_ ignora os outros argumentos
-        for cliente in cls.__lista_cliente:
-            if cliente.get_id() == id:
-                nome = input("Novo Nome do cliente: ")
-                email = input("Novo Email do cliente: ")
-                fone = input("Novo Telefone do cliente: ")
-                cliente.set_n(nome)
-                cliente.set_e(email)
-                cliente.set_f(fone)
-                print("Cliente atualizado com sucesso!")
+        for Contato in cls.__lista_Contato:
+            if Contato.get_id() == id:
+                nome = input("Novo Nome do Contato: ")
+                email = input("Novo Email do Contato: ")
+                fone = input("Novo Telefone do Contato: ")
+                Contato.set_n(nome)
+                Contato.set_e(email)
+                Contato.set_f(fone)
+                print("Contato atualizado com sucesso!")
                 return
-        print("Cliente não encontrado.")
+        print("Contato não encontrado.")
 
     @classmethod
     def Excluir(cls):
-        id = int(input("Identificador do cliente: "))
-        for cliente in cls.__lista_cliente:
-            if cliente.get_id() == id:
+        id = int(input("Identificador do Contato: "))
+        for Contato in cls.__lista_Contato:
+            if Contato.get_id() == id:
                 print("Tem certeza que deseja excluir? S/N")
                 if input().strip().upper() == "S":
-                    cls.__lista_cliente.remove(cliente)
-                    print("Cliente removido com sucesso!")
+                    cls.__lista_Contato.remove(Contato)
+                    print("Contato removido com sucesso!")
                 return
-        print("Cliente não encontrado.")
+        print("Contato não encontrado.")
 
     @classmethod
     def Salvar(cls, filepath):
@@ -98,7 +98,7 @@ class ClienteDAO:
                 "nome": c.get_n(),
                 "email": c.get_e(),
                 "fone": c.get_f(),
-            } for c in cls.__lista_cliente], file, indent=4)
+            } for c in cls.__lista_Contato], file, indent=4)
 
     @classmethod
     def Abrir(cls, filepath):
@@ -106,8 +106,8 @@ class ClienteDAO:
         if os.path.exists(filepath):
             with open(filepath, 'r') as file:
                 lista = json.load(file)
-                cls.__lista_cliente = [Cliente(d["id"], d["nome"], d["email"], d["fone"]) for d in lista]
+                cls.__lista_Contato = [Contato(d["id"], d["nome"], d["email"], d["fone"]) for d in lista]
                 contador = max(d["id"] for d in lista)  # Atualiza contador para o último ID
                 print("Dados carregados com sucesso!")
         else:
-            cls.__lista_cliente = []
+            cls.__lista_Contato = []
