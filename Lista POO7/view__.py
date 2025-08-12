@@ -1,21 +1,15 @@
-import template
+import models
 
-class Visualizador:
+class View:
     @staticmethod
-    def Contato_Listar():
-        template.ContatoDAO.Listar()
-
+    def Cliente_Listar():
+        return models.ClienteDAO.Listar()
     @staticmethod
-    def Contato_Inserir(nome, email, fone):
-        template.ContatoDAO.Inserir(nome, email, fone)
-
+    def Cliente_Inserir(nome,email,fone):
+        models.ClienteDAO.Inserir(nome,email,fone)
     @staticmethod
-    def Contato_Atualizar(id):
-        nome = input("Novo nome: ")
-        email = input("Novo email: ")
-        fone = input("Novo telefone: ")
-        template.ContatoDAO.Atualizar(id, nome, email, fone)
-
-    @staticmethod
-    def Contato_Excluir():
-        template.ContatoDAO.Excluir()
+    def Cliente_Atualizar(id,nome,email,fone):
+        models.ClienteDAO.Atualizar(id,nome,email,fone)
+    @staticmethod 
+    def Cliente_Excluir(id):
+        models.ClienteDAO.Excluir(id)
